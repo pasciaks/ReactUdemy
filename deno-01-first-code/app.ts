@@ -1,5 +1,5 @@
-const message: string = "hello";
-console.log(message);
+// const message: string = "hello";
+// console.log(message);
 
 const text = "This is a test - and it should be stored in a file!";
 
