@@ -349,3 +349,7 @@ ol {
     transform: scale(1);
   }
 }
+
+button:disabled{
+  opacity: 0.5;
+}
