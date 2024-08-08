@@ -4,8 +4,9 @@ import ResultModal from "./ResultModal";
 // let sharedValue = 'test'; // shared value between all instances of TimerChallenge
 
 export default function TimerChallenge({ title, targetTime }) {
-  const [timerExpired, setTimerExpired] = useState(false);
-  const [timerStarted, setTimerStarted] = useState(false);
+  // const [timerExpired, setTimerExpired] = useState(false);
+  // const [timerStarted, setTimerStarted] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(targetTime * 1000);
 
   const dialog = useRef();
 
@@ -13,48 +14,62 @@ export default function TimerChallenge({ title, targetTime }) {
 
   // let timer; // using variable, means this component recreated at state changes
 
+  const timerIsActive = timeRemaining > 0 && timeRemaining < targetTime * 1000;
+
   function handleStart() {
-    setTimerStarted(true);
-    timer.current = setTimeout(() => {
-      setTimerExpired(true);
-      dialog.current.open();
-    }, targetTime * 1000);
+    // setTimeRemaining(targetTime * 1000);
+    // setTimerStarted(true);
+    timer.current = setInterval(() => {
+      setTimeRemaining((prev) => prev - 10);
+      //setTimerExpired(true);
+      //dialog.current.open();
+    }, 10);
+  }
+
+  function handleReset() {
+    setTimeRemaining((prev) => targetTime * 1000);
+  }
+
+  if (timeRemaining < 0) {
+    clearInterval(timer.current);
+    dialog.current.open();
   }
 
   function handleStop() {
-    clearTimeout(timer.current);
-    setTimerStarted(false);
+    clearInterval(timer.current);
+    dialog.current.open();
+    // setTimerStarted(false);
   }
 
   return (
     <>
       {/* {timerExpired && ( */}
       <ResultModal
+        onReset={handleReset}
         ref={dialog}
-        result="You lost!"
+        remainingTime={timeRemaining}
         targetTime={targetTime}
-        onReset={() => {}}
       />
       {/* )} */}
       <section className="challenge">
         <h2>{title}</h2>
         <p className="challenge-time">{targetTime} second(s)</p>
         <p>
-          <button onClick={timerStarted ? handleStop : handleStart}>
-            {timerStarted ? "Stop" : "Start"} challenge
+          <button onClick={timerIsActive ? handleStop : handleStart}>
+            {timerIsActive ? "Stop" : "Start"} challenge
           </button>
         </p>
         {/* <p className={timerStarted && !timerExpired ? "active" : ""}>
           {timerStarted ? <p>Timer is running!</p> : <p>Timer is stopped!</p>}
         </p> */}
 
-        {timerStarted ? (
-          <p className={timerStarted && !timerExpired ? "active" : ""}>
-            Timer is running!
-          </p>
+        {timerIsActive ? (
+          <p className={timerIsActive ? "active" : ""}>Timer is running!</p>
         ) : (
           <p>Timer is stopped!</p>
         )}
+
+        {timeRemaining}
 
         <button>Reset Timer</button>
       </section>
