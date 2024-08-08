@@ -13,6 +13,10 @@ export default function Player() {
 
   function handleClick() {
     setEnteredPlayername(playerName.current.value);
+    // REACT is writing declarative code BUT the below line is IMPERATIVE code!
+    // Don't use REFs unless you have to! Use STATE instead!
+    // But for small things like this, it's okay!
+    playerName.current.value = "";
   }
 
   return (
