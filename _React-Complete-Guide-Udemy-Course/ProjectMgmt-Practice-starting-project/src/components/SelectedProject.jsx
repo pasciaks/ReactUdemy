@@ -1,5 +1,12 @@
 import Button from "./Button";
-export default function SelectedProject({ project, onDeleteProject }) {
+import Tasks from "./Tasks";
+export default function SelectedProject({
+  project,
+  onDeleteProject,
+  onAddTask,
+  onDeleteTask,
+  tasks,
+}) {
   const formattedDate = new Date(project.dueDate).toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
@@ -15,10 +22,10 @@ export default function SelectedProject({ project, onDeleteProject }) {
           </h1>
           <Button
             onClick={() => {
-              onDeleteProject(project.id);
+              onDeleteProject(project.id); // note: ID not needed because it is accessible in app state
             }}
           >
-            Delete
+            Clear
           </Button>
         </div>
         <p className="text-stone-400 mb-4">{formattedDate}</p>
@@ -26,6 +33,11 @@ export default function SelectedProject({ project, onDeleteProject }) {
           {project.description}
         </p>
       </header>
+      <Tasks
+        tasks={tasks.filter((task) => task.projectId === project.id)}
+        onAddTask={onAddTask}
+        onDeleteTask={onDeleteTask}
+      />
     </div>
   );
 }
