@@ -1,6 +1,6 @@
-import MealItem from './MealItem.jsx';
-import useHttp from '../hooks/useHttp.js';
-import Error from './Error.jsx';
+import MealItem from "./MealItem.jsx";
+import useHttp from "../hooks/useHttp.js";
+import Error from "./Error.jsx";
 
 const requestConfig = {};
 
@@ -9,7 +9,8 @@ export default function Meals() {
     data: loadedMeals,
     isLoading,
     error,
-  } = useHttp('http://localhost:3000/meals', requestConfig, []);
+    clearData,
+  } = useHttp("http://localhost:3000/meals", requestConfig, []);
 
   if (isLoading) {
     return <p className="center">Fetching meals...</p>;
@@ -24,10 +25,12 @@ export default function Meals() {
   // }
 
   return (
-    <ul id="meals">
-      {loadedMeals.map((meal) => (
-        <MealItem key={meal.id} meal={meal} />
-      ))}
-    </ul>
+    <>
+      <ul id="meals">
+        {loadedMeals.map((meal) => (
+          <MealItem key={meal.id} meal={meal} />
+        ))}
+      </ul>
+    </>
   );
 }

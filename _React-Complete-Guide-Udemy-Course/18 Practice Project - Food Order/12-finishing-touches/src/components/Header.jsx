@@ -1,13 +1,14 @@
-import { useContext } from 'react';
+import { useContext, useState } from "react";
 
-import Button from './UI/Button.jsx';
-import logoImg from '../assets/logo.jpg';
-import CartContext from '../store/CartContext.jsx';
-import UserProgressContext from '../store/UserProgressContext.jsx';
-
+import Button from "./UI/Button.jsx";
+import logoImg from "../assets/logo.jpg";
+import CartContext from "../store/CartContext.jsx";
+import UserProgressContext from "../store/UserProgressContext.jsx";
+import AnimatedSpan from "./UI/AnimatedSpan.jsx";
 export default function Header() {
   const cartCtx = useContext(CartContext);
   const userProgressCtx = useContext(UserProgressContext);
+  const [count, setCount] = useState(0);
 
   const totalCartItems = cartCtx.items.reduce((totalNumberOfItems, item) => {
     return totalNumberOfItems + item.quantity;
@@ -25,7 +26,7 @@ export default function Header() {
       </div>
       <nav>
         <Button textOnly onClick={handleShowCart}>
-          Cart ({totalCartItems})
+          Cart (<AnimatedSpan id="itemcount" value={totalCartItems} />)
         </Button>
       </nav>
     </header>

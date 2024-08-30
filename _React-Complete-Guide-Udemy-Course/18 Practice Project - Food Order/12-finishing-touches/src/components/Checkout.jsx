@@ -1,18 +1,18 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 
-import Modal from './UI/Modal.jsx';
-import CartContext from '../store/CartContext.jsx';
-import { currencyFormatter } from '../util/formatting.js';
-import Input from './UI/Input.jsx';
-import Button from './UI/Button.jsx';
-import UserProgressContext from '../store/UserProgressContext.jsx';
-import useHttp from '../hooks/useHttp.js';
-import Error from './Error.jsx';
+import Modal from "./UI/Modal.jsx";
+import CartContext from "../store/CartContext.jsx";
+import { currencyFormatter } from "../util/formatting.js";
+import Input from "./UI/Input.jsx";
+import Button from "./UI/Button.jsx";
+import UserProgressContext from "../store/UserProgressContext.jsx";
+import useHttp from "../hooks/useHttp.js";
+import Error from "./Error.jsx";
 
 const requestConfig = {
-  method: 'POST',
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 };
 
@@ -25,8 +25,8 @@ export default function Checkout() {
     isLoading: isSending,
     error,
     sendRequest,
-    clearData
-  } = useHttp('http://localhost:3000/orders', requestConfig);
+    clearData,
+  } = useHttp("http://localhost:3000/orders", requestConfig);
 
   const cartTotal = cartCtx.items.reduce(
     (totalPrice, item) => totalPrice + item.quantity * item.price,
@@ -75,7 +75,7 @@ export default function Checkout() {
   if (data && !error) {
     return (
       <Modal
-        open={userProgressCtx.progress === 'checkout'}
+        open={userProgressCtx.progress === "checkout"}
         onClose={handleFinish}
       >
         <h2>Success!</h2>
@@ -92,7 +92,7 @@ export default function Checkout() {
   }
 
   return (
-    <Modal open={userProgressCtx.progress === 'checkout'} onClose={handleClose}>
+    <Modal open={userProgressCtx.progress === "checkout"} onClose={handleClose}>
       <form onSubmit={handleSubmit}>
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(cartTotal)}</p>
