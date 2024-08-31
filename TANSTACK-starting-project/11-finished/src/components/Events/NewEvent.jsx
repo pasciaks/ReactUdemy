@@ -1,11 +1,11 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 
-import Modal from '../UI/Modal.jsx';
-import EventForm from './EventForm.jsx';
-import { createNewEvent } from '../../util/http.js';
-import ErrorBlock from '../UI/ErrorBlock.jsx';
-import { queryClient } from '../../util/http.js';
+import Modal from "../UI/Modal.jsx";
+import EventForm from "./EventForm.jsx";
+import { createNewEvent } from "../../util/http.js";
+import ErrorBlock from "../UI/ErrorBlock.jsx";
+import { queryClient } from "../../util/http.js";
 
 export default function NewEvent() {
   const navigate = useNavigate();
@@ -13,8 +13,12 @@ export default function NewEvent() {
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: createNewEvent,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['events'] });
-      navigate('/events');
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+      alert("Mutation success!");
+      navigate("/events");
+    },
+    onError: (e) => {
+      alert(JSON.stringify(e));
     },
   });
 
@@ -23,9 +27,9 @@ export default function NewEvent() {
   }
 
   return (
-    <Modal onClose={() => navigate('../')}>
+    <Modal onClose={() => navigate("../")}>
       <EventForm onSubmit={handleSubmit}>
-        {isPending && 'Submitting...'}
+        {isPending && "Submitting..."}
         {!isPending && (
           <>
             <Link to="../" className="button-text">
@@ -42,7 +46,7 @@ export default function NewEvent() {
           title="Failed to create event"
           message={
             error.info?.message ||
-            'Failed to create event. Please check your inputs and try again later.'
+            "Failed to create event. Please check your inputs and try again later."
           }
         />
       )}
